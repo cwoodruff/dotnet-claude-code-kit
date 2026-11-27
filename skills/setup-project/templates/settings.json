@@ -1,0 +1,23 @@
+{
+  "$comment": "Project-shared permission rules for .NET solutions, copied in by /dotnet-kit:setup-project. The kit's hooks come from the dotnet-kit plugin, not this file. Adjust the rules to your team's risk tolerance.",
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build*)",
+      "Bash(dotnet test*)",
+      "Bash(dotnet format*)",
+      "Bash(dotnet restore*)",
+      "Bash(dotnet list *)",
+      "Bash(dotnet ef migrations list*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)"
+    ],
+    "deny": [
+      "Read(**/appsettings.Production.json)",
+      "Read(**/*.pfx)",
+      "Read(**/secrets.json)",
+      "Bash(dotnet ef database drop*)",
+      "Bash(git push --force*)"
+    ]
+  }
+}

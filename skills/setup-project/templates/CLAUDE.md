@@ -57,6 +57,5 @@ Run `dotnet build` after any multi-file change and fix all warnings, not just er
 ## Where the rest of the guidance lives
 
 - `.claude/rules/` — path-scoped conventions (C# style, API design, EF Core, testing, security). These load automatically when you touch matching files.
-- `.claude/skills/` — step-by-step procedures (`/ef-migration`, `/add-endpoint`, `/gen-tests`, …).
-- `.claude/agents/` — specialized subagents (code-reviewer, test-writer, security-auditor, …).
-- `.claude/settings.json` — hooks that auto-build after writes and protect migration files.
+- `.claude/settings.json` — shared permission allow/deny rules.
+- The `dotnet-kit` plugin — skills (`/ef-migration`, `/add-endpoint`, `/gen-tests`, `/dotnet-review`, …), subagents (code-reviewer, test-writer, security-auditor, …), commands, and the hooks that auto-build after writes and protect migration files. Install it with `claude plugin install dotnet-kit --marketplace cwoodruff/dotnet-claude-code-kit`.

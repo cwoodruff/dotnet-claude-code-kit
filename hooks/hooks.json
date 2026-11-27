@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dotnet run --file \"${CLAUDE_PLUGIN_ROOT}/hooks/protect-paths.cs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dotnet run --file \"${CLAUDE_PLUGIN_ROOT}/hooks/dotnet-post-write.cs\"",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dotnet run --file \"${CLAUDE_PLUGIN_ROOT}/hooks/format-on-stop.cs\"",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "dotnet-kit",
+  "version": "1.0.0",
+  "description": "Claude Code kit for C# / ASP.NET Core solutions: skills, subagents, commands, and C# hooks that build after every edit and protect generated files.",
+  "author": {
+    "name": "Chris Woodruff"
+  },
+  "homepage": "https://github.com/cwoodruff/dotnet-claude-code-kit",
+  "repository": "https://github.com/cwoodruff/dotnet-claude-code-kit",
+  "license": "MIT",
+  "keywords": ["dotnet", "csharp", "aspnetcore", "efcore"]
+}

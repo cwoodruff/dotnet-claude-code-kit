@@ -1,0 +1,14 @@
+{
+  "name": "dotnet-claude-code-kit",
+  "owner": {
+    "name": "Chris Woodruff"
+  },
+  "description": "The .NET Claude Code kit from the AI-Powered .NET Development workshop.",
+  "plugins": [
+    {
+      "name": "dotnet-kit",
+      "source": "./",
+      "description": "Claude Code kit for C# / ASP.NET Core solutions: skills, subagents, commands, and C# hooks."
+    }
+  ]
+}

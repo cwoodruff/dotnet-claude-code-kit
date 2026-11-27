@@ -73,6 +73,7 @@ commands/                      Explicit-invocation prompts
   coverage-gaps.md           changelog.md            perf-review.md     fix-issue.md
 hooks/
   hooks.json                   Registers the three hooks below
+  global.json                  Picks SDK 10 for the hooks even if your solution pins an older SDK
   dotnet-post-write.cs         builds after every .cs/.csproj write; errors AND warnings
                                go back to Claude (exit 2) so it fixes them
   protect-paths.cs             blocks hand-edits to Migrations/, lock files, prod config

@@ -1,7 +1,9 @@
 // PreToolUse hook for Write|Edit: block hand-edits to generated or protected files.
 // Migrations go through `dotnet ef migrations add`; lock files and production config are
 // not the agent's to edit. Registered in hooks/hooks.json as:
-//   dotnet run --file "${CLAUDE_PLUGIN_ROOT}/hooks/protect-paths.cs"
+//   cd "${CLAUDE_PLUGIN_ROOT}/hooks" && dotnet run --file protect-paths.cs
+// It starts from the plugin folder so hooks/global.json picks SDK 10 even when the solution pins an
+// older SDK.
 // Exit 2 blocks the call and stderr goes back to Claude as the reason. Exit 0 lets it run.
 using System.Text.Json;
 

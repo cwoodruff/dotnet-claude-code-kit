@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "dotnet run --file \"${CLAUDE_PLUGIN_ROOT}/hooks/protect-paths.cs\""
+            "command": "cd \"${CLAUDE_PLUGIN_ROOT}/hooks\" && dotnet run --file protect-paths.cs"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "dotnet run --file \"${CLAUDE_PLUGIN_ROOT}/hooks/dotnet-post-write.cs\"",
+            "command": "cd \"${CLAUDE_PLUGIN_ROOT}/hooks\" && dotnet run --file dotnet-post-write.cs",
             "timeout": 120
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "dotnet run --file \"${CLAUDE_PLUGIN_ROOT}/hooks/format-on-stop.cs\"",
+            "command": "cd \"${CLAUDE_PLUGIN_ROOT}/hooks\" && dotnet run --file format-on-stop.cs",
             "timeout": 120
           }
         ]

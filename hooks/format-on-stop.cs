@@ -1,7 +1,12 @@
 // Stop hook: when a turn ends with changed C# files, check formatting and list the files
 // that need it. Never blocks (always exit 0). Registered in hooks/hooks.json as:
-//   dotnet run --file "${CLAUDE_PLUGIN_ROOT}/hooks/format-on-stop.cs"
+//   cd "${CLAUDE_PLUGIN_ROOT}/hooks" && dotnet run --file format-on-stop.cs
+// It starts from the plugin folder so hooks/global.json picks SDK 10 even when the solution pins an
+// older SDK; build and format subprocesses run back in the project folder.
 using System.Diagnostics;
+
+// The launcher runs in the plugin folder; check the project, under the project's own SDK choice.
+var projectDir = Environment.GetEnvironmentVariable("CLAUDE_PROJECT_DIR") ?? Directory.GetCurrentDirectory();
 
 var changed = await Run("git", "diff", "--name-only", "HEAD");
 if (changed.ExitCode != 0 ||
@@ -21,10 +26,11 @@ if (format.ExitCode != 0)
 }
 return 0;
 
-static async Task<(int ExitCode, string Output)> Run(string fileName, params string[] args)
+async Task<(int ExitCode, string Output)> Run(string fileName, params string[] args)
 {
     var psi = new ProcessStartInfo(fileName)
     {
+        WorkingDirectory = projectDir,
         RedirectStandardOutput = true,
         RedirectStandardError = true,
     };

@@ -1,12 +1,17 @@
 // PostToolUse hook for Write|Edit: build after any change that affects compilation and feed
 // errors and warnings back to Claude so it fixes them. Registered in hooks/hooks.json as:
-//   dotnet run --file "${CLAUDE_PLUGIN_ROOT}/hooks/dotnet-post-write.cs"
+//   cd "${CLAUDE_PLUGIN_ROOT}/hooks" && dotnet run --file dotnet-post-write.cs
+// It starts from the plugin folder so hooks/global.json picks SDK 10 even when the solution pins an
+// older SDK; build and format subprocesses run back in the project folder.
 // Exit 2 sends stderr back to Claude. Warnings count as failures, as the kit's CLAUDE.md says.
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
 string[] buildInputs = [".cs", ".csproj", ".sln", ".slnx", ".props", ".targets", ".razor"];
+
+// The launcher runs in the plugin folder; build in the project, under the project's own SDK choice.
+var projectDir = Environment.GetEnvironmentVariable("CLAUDE_PROJECT_DIR") ?? Directory.GetCurrentDirectory();
 
 string file;
 try
@@ -34,6 +39,7 @@ if (!buildInputs.Any(ext => file.EndsWith(ext, StringComparison.OrdinalIgnoreCas
 
 var psi = new ProcessStartInfo("dotnet")
 {
+    WorkingDirectory = projectDir,
     RedirectStandardOutput = true,
     RedirectStandardError = true,
 };
@@ -48,11 +54,12 @@ var stderr = build.StandardError.ReadToEndAsync();
 await build.WaitForExitAsync();
 var output = await stdout + await stderr;
 
-// MSBuild diagnostics look like "path(line,col): error CS1002: ...". Each one can be printed
+// MSBuild diagnostics look like "path(line,col): error CS1002: ...", "...: warning xUnit1031: ..."
+// or, with no code, "...: warning : ...". Each one can be printed
 // twice (once per project and once in the summary), so keep the distinct lines.
 var diagnostics = output.Split('\n')
     .Select(line => line.Trim())
-    .Where(line => Regex.IsMatch(line, @": (error|warning) [A-Z]+\d+", RegexOptions.None, TimeSpan.FromSeconds(1)))
+    .Where(line => Regex.IsMatch(line, @": (error|warning)( [A-Za-z]+\d+)? *:", RegexOptions.None, TimeSpan.FromSeconds(1)))
     .Distinct()
     .ToList();
 var warnings = diagnostics.Where(line => line.Contains(": warning ")).ToList();
